@@ -80,6 +80,10 @@ namespace betareborn
             return createVector(xCoord + var1, yCoord + var3, zCoord + var5);
         }
 
+        public Vec3D addVector(Vec3D other) {
+            return addVector(other.xCoord, other.yCoord, other.zCoord);
+        }
+
         public double distanceTo(Vec3D var1)
         {
             double var2 = var1.xCoord - xCoord;

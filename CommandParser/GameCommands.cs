@@ -90,12 +90,28 @@ public class GameCommands {
         }
     }
 
-    [MinecraftCommand("teleport", aliases: "tp", description:"teleports player", usage:"/teleport <x> <y> <z>")]
+    [MinecraftCommand("teleport", "tp")]
     public void Teleport(CommandContext ctx, float x, float y, float z) {
         ctx.Game.thePlayer.setPosition(x, y, z);
     }
 
-    [MinecraftCommand("summon", aliases: "spawn", description:"spawns mobs", usage:"/summon <entity name>")]
+    [MinecraftCommand("tpthere")]
+    public void TeleportThere(CommandContext ctx, float dist = 100) {
+        var vec = ctx.Game.thePlayer.getLookVec();
+        var mc = ctx.Game;
+
+        var a = Vec3D.createVector(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+        var b = Vec3D.createVector(vec.xCoord * dist + a.xCoord, vec.yCoord * dist + a.yCoord,
+            vec.zCoord * dist + a.zCoord);
+
+        var over = mc.theWorld.rayTraceBlocks(a, b);
+        if (over != null) {
+            ctx.Game.thePlayer.setPosition(over.blockX, over.blockY + 2, over.blockZ);
+        }
+    }
+
+
+    [MinecraftCommand("summon", "spawn")]
     public void Summon(CommandContext ctx, string name) {
         var p = ctx.Game.thePlayer;
         var ent = EntityRegistry.createEntityAt(name, ctx.Game.theWorld, (float)p.posX, (float)p.posY, (float)p.posZ);
